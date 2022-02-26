@@ -3,7 +3,7 @@ Type: Package
 Title: Classes for Fitness Landscapes and Seascapes
 Version: 0.1.0
 Authors@R: c(
-    person("Raoul", "Wadhwa", "raoulwadhwa@gmail.com", role = c("aut", "cre"),
+    person("Raoul", "Wadhwa", email = "raoulwadhwa@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0503-9580")),
     person("Jacob", "Scott", role = "aut",
            comment = c(ORCID = "0000-0003-2971-7673")))
