@@ -15,6 +15,11 @@ new_FitLandDF <- function(scape_df, dims) {
                "(2 dimensions, 1 column for values)"))
   }
 
+  # make sure that number of coordinate dimensions in scape_df matches dims
+  if (ncol(scape_df) - 1 != length(dims)) {
+    stop("mismatch in dimensions within landscape data and dims variable")
+  }
+
   # ensure that dims is a vector of integers with at least 2 members
   if (!is.integer(dims)) {
     stop("dimensions provided are not integer values")
@@ -53,6 +58,23 @@ validate_FitLandDF <- function(x) {
 }
 
 #' Create New FitLandDF Instance
+#'
+#' @export
+#' @param scape_data either data.frame or array object
+#' @param dims integer vector containing dimensions
+#' @return FitLandDF object
+#' @examples
+#' # create a flat fitness landscape with 3 binary (values 1 and 2) dimensions
+#' values <- array(2, dim = rep(2, 3))
+#'
+#' my_landscape <- FitLandDF(values)
+#'
+#' # create a 2x2 fitness landscape that's highest when both dimensions are at 1
+#' vals <- 1:2
+#' df <- expand.grid(vals)
+#' df$Landscape_value <- c(1, 2, 3, 6)
+#'
+#' my_landscape <- FitLandDF(df, dims = c(2, 2))
 FitLandDF <- function(scape_data, dims = dim(scape_data)) {
   scape_df <- NULL
 
@@ -93,6 +115,8 @@ FitLandDF <- function(scape_data, dims = dim(scape_data)) {
 
 #####GENERICS#####
 # print
+#' @method print FitLandDF
+#' @export
 print.FitLandDF <- function(x, ...) {
   print(paste("A fitness landscape with dimensions",
               paste(dims(x), collapse = "x"),
@@ -100,23 +124,50 @@ print.FitLandDF <- function(x, ...) {
 }
 
 # mean
+#' @method mean FitLandDF
+#' @export
 mean.FitLandDF <- function(x, ...) {
   mean(x$Value, ...)
 }
 
 # median
+#' @method median FitLandDF
+#' @export
 median.FitLandDF <- function(x, ...) {
   median(x$Value, ...)
 }
 
 #####METHODS#####
 # confirm that an object is a valid instance of FitLandDF
+#' Confirm Object is Valid Instance of FitLandDF
+#'
+#' @name isFitLandDF
+#' @export
+#' @param x object whose class is in question
+#' @return `logical`; `TRUE` if `x` is an instance of FitLandDF,
+#'   `FALSE` otherwise
 is.FitLandDF <- function(x) {
   "FitLandDF" %in% class(validate_FitLandDF(x))
 }
+
+#' @rdname isFitLandDF
+#' @export
 is_FitLandDF <- function(x) is.FitLandDF(x)
 
 # dimensions of FitLandDF object
+#' Get Dimensions of Fitness Landscape
+#'
+#' @export
+#' @param x FitLandDF object
+#' @return integer vector analogous to `base::dim`
+#' @examples
+#' # create flat fitness landscape with dimensions 3x3x3
+#' values <- array(0, dim = rep(3, 3))
+#' my_landscape <- FitLandDF(values)
+#'
+#' # print dimensions
+#' dims(my_landscape)
+#'
 dims <- function(x) {
   stopifnot(is.FitLandDF(x))
 
@@ -124,11 +175,32 @@ dims <- function(x) {
 }
 
 # standard deviation and variance of values in fitness landscape
+#' Get Standard Deviation/Variance of Values in Fitness Landscape
+#'
+#' @name sdvar
+#' @export
+#' @param x FitLandDF object
+#' @param ... additional parameters (e.g. `na.rm`)
+#' @return variance or standard deviation of values in fitness landscape
+#' @examples
+#' # create fitness landscape with non-zero variance and standard deviation
+#' values <- array(1:27, dim = rep(3, 3))
+#' my_landscape <- FitLandDF(values)
+#'
+#' # calculate variance
+#' variance(my_landscape)
+#'
+#' # calculate standard deviation
+#' sdev(my_landscape)
+#'
 variance <- function(x, ...) {
   stopifnot(is.FitLandDF(x))
 
   var(x$Value, ...)
 }
+
+#' @rdname sdvar
+#' @export
 sdev <- function(x, ...) {
   stopifnot(is.FitLandDF(x))
 
@@ -136,14 +208,46 @@ sdev <- function(x, ...) {
 }
 
 # least and highest fitness values
+#' Get Highest and Lowest Fitness Values from Fitness Landscape
+#'
+#' @name minmax
+#' @export
+#' @param x FitLandDF object
+#' @return minimum or maximum fitness value in this landscape
+#' @examples
+#' # create fitness landscape with min value 1 and max value 27
+#' values <- array(1:27, dim = rep(3, 3))
+#' my_landscape <- FitLandDF(values)
+#'
+#' # calculate maximum fitness value
+#' max_fit(my_landscape)
+#'
+#' # calculate minimum fitness value
+#' min_fit(my_landscape)
+#'
 min_fit <- function(x, ...) {
   min(x$Value)
 }
+
+#' @rdname minmax
+#' @export
 max_fit <- function(x, ...) {
   max(x$Value)
 }
 
 # get the underlying data frame from the FitLandDF object
+#' Extract Data Frame Representation of Fitness Landscape
+#'
+#' @export
+#' @param x FitLandDF object
+#' @return data frame representation of fitness landscape
+#' @examples
+#' # create fitness landscape
+#' values <- array(1:27, dim = rep(3, 3))
+#' my_landscape <- FitLandDF(values)
+#'
+#' # extact data frame representation
+#' my_df <- extract_df(my_landscape)
 extract_df <- function(x) {
   stopifnot(is.FitLandDF(x))
 
@@ -153,6 +257,7 @@ extract_df <- function(x) {
 }
 
 # some of the ones below might be moved to a different package someday
+# location of max and min fitness values
 # range (max - min)
 # extract_values to get matrix/array out
 # is_complete to check if all values of the fitness landscape are known

@@ -16,3 +16,4 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/rrrlw/fitscape
 BugReports: https://github.com/rrrlw/fitscape/issues
+RoxygenNote: 7.1.1
