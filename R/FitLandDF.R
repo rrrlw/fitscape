@@ -74,10 +74,10 @@ validate_FitLandDF <- function(x) {
 #'
 #' # create a 2x2 fitness landscape that's highest when both dimensions are at 1
 #' vals <- 1:2
-#' df <- expand.grid(vals)
+#' df <- expand.grid(vals, vals)
 #' df$Landscape_value <- c(1, 2, 3, 6)
 #'
-#' my_landscape <- FitLandDF(df, dims = c(2, 2))
+#' my_landscape <- FitLandDF(df, dims = c(2L, 2L))
 FitLandDF <- function(scape_data, dims = dim(scape_data)) {
   scape_df <- NULL
 
@@ -105,7 +105,7 @@ FitLandDF <- function(scape_data, dims = dim(scape_data)) {
     scape_df$Value <- vals
 
     # remove NAs
-    scape_df <- subset(scape_df, !is.na(Value))
+    scape_df <- scape_df[!is.na(scape_df$Value), ]
 
   # if scape_data is neither array nor data frame, then there's an issue
   } else {
@@ -134,6 +134,7 @@ mean.FitLandDF <- function(x, ...) {
 }
 
 # median
+#' @importFrom stats median
 #' @method median FitLandDF
 #' @export
 median.FitLandDF <- function(x, ...) {
@@ -182,6 +183,7 @@ dims <- function(x) {
 #'
 #' @name sdvar
 #' @export
+#' @importFrom stats var
 #' @param x FitLandDF object
 #' @param ... additional parameters (e.g. `na.rm`)
 #' @return variance or standard deviation of values in fitness landscape
@@ -203,6 +205,7 @@ variance <- function(x, ...) {
 }
 
 #' @rdname sdvar
+#' @importFrom stats sd
 #' @export
 sdev <- function(x, ...) {
   stopifnot(is.FitLandDF(x))
@@ -228,14 +231,14 @@ sdev <- function(x, ...) {
 #' # calculate minimum fitness value
 #' min_fit(my_landscape)
 #'
-min_fit <- function(x, ...) {
-  min(x$Value)
+min_fit <- function(x) {
+  min(x$Value, na.rm = TRUE)
 }
 
 #' @rdname minmax
 #' @export
-max_fit <- function(x, ...) {
-  max(x$Value)
+max_fit <- function(x) {
+  max(x$Value, na.rm = TRUE)
 }
 
 # get the underlying data frame from the FitLandDF object

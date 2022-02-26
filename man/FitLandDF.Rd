@@ -25,8 +25,8 @@ my_landscape <- FitLandDF(values)
 
 # create a 2x2 fitness landscape that's highest when both dimensions are at 1
 vals <- 1:2
-df <- expand.grid(vals)
+df <- expand.grid(vals, vals)
 df$Landscape_value <- c(1, 2, 3, 6)
 
-my_landscape <- FitLandDF(df, dims = c(2, 2))
+my_landscape <- FitLandDF(df, dims = c(2L, 2L))
 }

@@ -6,9 +6,9 @@
 \alias{max_fit}
 \title{Get Highest and Lowest Fitness Values from Fitness Landscape}
 \usage{
-min_fit(x, ...)
+min_fit(x)
 
-max_fit(x, ...)
+max_fit(x)
 }
 \arguments{
 \item{x}{FitLandDF object}
