@@ -40,6 +40,9 @@ new_FitLandDF <- function(scape_df, dims) {
 
 # validator for FitLandDF class
 validate_FitLandDF <- function(x) {
+  # make sure class is appropriate
+  stopifnot(inherits(x, "FitLandDF"))
+
   # make sure all coordinates in data frame are within range
   for (curr_col in seq_len(ncol(x) - 1)) {
     curr_vals <- x[[curr_col]]
@@ -147,7 +150,7 @@ median.FitLandDF <- function(x, ...) {
 #' @return `logical`; `TRUE` if `x` is an instance of FitLandDF,
 #'   `FALSE` otherwise
 is.FitLandDF <- function(x) {
-  "FitLandDF" %in% class(validate_FitLandDF(x))
+  inherits(x, "FitLandDF")
 }
 
 #' @rdname isFitLandDF
