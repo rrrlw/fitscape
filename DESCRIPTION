@@ -1,11 +1,18 @@
 Package: fitscape
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Classes for Fitness Landscapes and Seascapes
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(
+    person("Raoul", "Wadhwa", "raoulwadhwa@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-0503-9580")),
+    person("Jacob", "Scott", role = "aut",
+           comment = c(ORCID = "0000-0003-2971-7673")))
+Description: Convenient classes to model fitness landscapes and fitness
+    seascapes. A low-level package with which most users will not interact but
+    upon which other packages modeling fitness landscapes and fitness seascapes
+    will depend.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/rrrlw/fitscape
+BugReports: https://github.com/rrrlw/fitscape/issues
