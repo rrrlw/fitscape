@@ -101,16 +101,13 @@ print.FitLandDF <- function(x, ...) {
 
 # mean
 mean.FitLandDF <- function(x, ...) {
-  mean(x$Value)
+  mean(x$Value, ...)
 }
 
 # median
 median.FitLandDF <- function(x, ...) {
-  median(x$Value)
+  median(x$Value, ...)
 }
-
-# ?min/max/range generic
-
 
 #####METHODS#####
 # confirm that an object is a valid instance of FitLandDF
@@ -127,15 +124,23 @@ dims <- function(x) {
 }
 
 # standard deviation and variance of values in fitness landscape
-variance <- function(x) {
+variance <- function(x, ...) {
   stopifnot(is.FitLandDF(x))
 
-  var(x$Value)
+  var(x$Value, ...)
 }
-sdev <- function(x) {
+sdev <- function(x, ...) {
   stopifnot(is.FitLandDF(x))
 
-  sd(x$Value)
+  sd(x$Value, ...)
+}
+
+# least and highest fitness values
+min_fit <- function(x, ...) {
+  min(x$Value)
+}
+max_fit <- function(x, ...) {
+  max(x$Value)
 }
 
 # get the underlying data frame from the FitLandDF object
@@ -148,7 +153,7 @@ extract_df <- function(x) {
 }
 
 # some of the ones below might be moved to a different package someday
-# extract_df to get data frame out
+# range (max - min)
 # extract_values to get matrix/array out
 # is_complete to check if all values of the fitness landscape are known
 # ?epistasis
